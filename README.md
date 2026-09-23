@@ -1,4 +1,4 @@
-# Confluence SSO MCP
+# Confluence MCP
 
 A **[Model Context Protocol (MCP)](https://modelcontextprotocol.io/)** server for **Atlassian Confluence**. It connects **Cursor**, **Claude Desktop**, and other MCP clients to **whatever Confluence site you configure**—your company’s Data Center, a Cloud site (`*.atlassian.net`), or any host where the **Confluence REST API** is available and you can authenticate.
 
@@ -8,7 +8,7 @@ A **[Model Context Protocol (MCP)](https://modelcontextprotocol.io/)** server fo
 
 | Project | Purpose |
 |---------|---------|
-| **Jira MCP** | [jira-mcp-auth](https://github.com/Wasim-Shaikh25/jira-mcp-auth) — Jira REST + SSO ([`jira-mcp-oauth`](https://www.npmjs.com/package/jira-mcp-oauth) on npm). Same SSO-cookie design as this server. |
+| **Jira MCP** | [jira-mcp](https://github.com/Wasim-Shaikh25/jira-mcp) — Jira REST + SSO ([`jira-mcp`](https://www.npmjs.com/package/jira-mcp) on npm). Same SSO-cookie design as this server. |
 | **GitHub Enterprise launcher** | [mcp-github-enterprise-launcher](https://github.com/Wasim-Shaikh25/mcp-github-enterprise-launcher) — npm stdio wrapper for a `github-mcp-server` binary. |
 | **SonarQube launcher** | [mcp-sonarqube-launcher](https://github.com/Wasim-Shaikh25/mcp-sonarqube-launcher) — npm stdio wrapper for a SonarQube MCP JAR. |
 
@@ -76,18 +76,18 @@ npx playwright install chromium
 # Run the MCP on stdio (set base URL first)
 # Windows CMD:
 set CONFLUENCE_BASE_URL=https://confluence.example.com
-npx -y confluence-sso-mcp
+npx -y confluence-mcp
 
 # Windows PowerShell:
 $env:CONFLUENCE_BASE_URL="https://confluence.example.com"
-npx -y confluence-sso-mcp
+npx -y confluence-mcp
 ```
 
 ### Option B — Clone this repository
 
 ```bash
 git clone <your-repo-url>
-cd confluence-mcp-oauth
+cd confluence-mcp
 npm install
 npm run install-browser   # Chromium for SSO
 npm start                 # runs the MCP on stdio; usually Cursor starts this for you
@@ -142,14 +142,14 @@ Restart Cursor after changes.
 
 ### Using npx (published package)
 
-Package name on npm: **`confluence-sso-mcp`**.
+Package name on npm: **`confluence-mcp`**.
 
 ```json
 {
   "mcpServers": {
     "confluence-sso": {
       "command": "npx",
-      "args": ["-y", "confluence-sso-mcp"],
+      "args": ["-y", "confluence-mcp"],
       "env": {
         "CONFLUENCE_BASE_URL": "https://confluence.company.com",
         "CONFLUENCE_LOGIN_WAIT_SECONDS": "90"
@@ -168,7 +168,7 @@ Package name on npm: **`confluence-sso-mcp`**.
   "mcpServers": {
     "confluence-sso": {
       "command": "node",
-      "args": ["C:/path/to/confluence-mcp-oauth/src/index.js"],
+      "args": ["C:/path/to/confluence-mcp/src/index.js"],
       "env": {
         "CONFLUENCE_BASE_URL": "https://confluence.company.com",
         "CONFLUENCE_LOGIN_WAIT_SECONDS": "90"
@@ -240,7 +240,7 @@ Cookies are stored in **`cookies/session.json`** (gitignored).
 | **Syntax + config (no Confluence calls)** | **`npm run validate`** — syntax-checks **`src/`**; with **`CONFLUENCE_BASE_URL`** set, prints resolved base and login URL. |
 | **Instance / URL** | In Agent, call **`confluence_health_check`**—**`hostMatches`** should be true if **`CONFLUENCE_BASE_URL`** matches the REST host. |
 | **MCP wiring** | Cursor **Settings → MCP**: server **connected**; restart after **`mcp.json`** edits. |
-| **Inspector (optional)** | [MCP Inspector](https://github.com/modelcontextprotocol/inspector) with **`node path/to/confluence-mcp-oauth/src/index.js`** and the same **`env`** as Cursor. |
+| **Inspector (optional)** | [MCP Inspector](https://github.com/modelcontextprotocol/inspector) with **`node path/to/confluence-mcp/src/index.js`** and the same **`env`** as Cursor. |
 
 ---
 
@@ -264,7 +264,7 @@ Cookies are stored in **`cookies/session.json`** (gitignored).
 | **`confluence_login` hangs or times out in UI** | Chromium may still be open—check the taskbar; or run **`npm run login`** in a terminal (up to **`CONFLUENCE_LOGIN_WAIT_SECONDS`**). |
 | **Browser closes right after opening** | The session probe no longer treats **200 HTML** (after redirects) as “logged in”. Update this package; if it still happens, re-run login and complete SSO fully. |
 | **`Execution context was destroyed` / navigation** | During SSO, **`page.evaluate`** can throw while the page redirects; the login loop now **retries** instead of failing the tool. If login still fails, re-run login and complete SSO fully. |
-| **`ERR_MODULE_NOT_FOUND` for `src/auth.js` (or other `src/*.js`) after `npx`** | The tarball on npm was incomplete or npx cached a bad extract. **Publish** the latest patch (package `files` lists every `src/*.js` explicitly), then **clear npx cache**: delete `%LocalAppData%\npm-cache\_npx` (or run `npx clear-npx-cache` on npm 11+). Pin a version in **`mcp.json`**, e.g. **`"args": ["-y", "confluence-sso-mcp@x.y.z"]`**. Workaround: run from a **git clone** with **`node`** + full path to **`src/index.js`**. |
+| **`ERR_MODULE_NOT_FOUND` for `src/auth.js` (or other `src/*.js`) after `npx`** | The tarball on npm was incomplete or npx cached a bad extract. **Publish** the latest patch (package `files` lists every `src/*.js` explicitly), then **clear npx cache**: delete `%LocalAppData%\npm-cache\_npx` (or run `npx clear-npx-cache` on npm 11+). Pin a version in **`mcp.json`**, e.g. **`"args": ["-y", "confluence-mcp@x.y.z"]`**. Workaround: run from a **git clone** with **`node`** + full path to **`src/index.js`**. |
 | **`ENOENT` on `cookies/*.lock`** | Create a **`cookies/`** folder next to the installed **`src/`** if the lock file cannot be created (Windows `npx` cache). Prefer **`node path/to/clone/src/index.js`** with local **`npm install`**. |
 | **`TAR_ENTRY_ERROR EPERM` / `*.DELETE.*` under `_npx`** | Antivirus or file locks on **`%LocalAppData%\npm-cache`** can corrupt installs. Exclude that path from real-time scanning, or use a **local clone** + **`node`** instead of **`npx`**. |
 
@@ -276,4 +276,4 @@ For broader Cursor MCP issues, see [Cursor forum: MCP tools](https://forum.curso
 
 See **`package.json`** for `repository`, `homepage`, and `bugs` links once you publish or fork.
 
-The npm package name is **`confluence-sso-mcp`** (unscoped). If you previously published under **`@svasimahmed283/confluence-sso-mcp`**, keep that version for backward compatibility or deprecate it on npm after publishing this name.
+The npm package name is **`confluence-mcp`**. Legacy names: **`confluence-sso-mcp`**, **`@svasimahmed283/confluence-sso-mcp`**, repo **`confluence-mcp-oauth`** — deprecate on npm/GitHub after migrating clients.

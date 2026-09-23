@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 0.2.2
+
+### Changed
+
+- **Renamed** npm package and MCP server to **`confluence-mcp`** (legacy: `confluence-sso-mcp`, `confluence-mcp-oauth`). GitHub repo: **`Wasim-Shaikh25/confluence-mcp`**.
+
 ## 0.2.1
 
 ### Changed

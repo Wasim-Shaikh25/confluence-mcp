@@ -1,6 +1,6 @@
 {
-  "name": "confluence-sso-mcp",
-  "version": "0.2.1",
+  "name": "confluence-mcp",
+  "version": "0.2.2",
   "description": "Model Context Protocol (MCP) server for Atlassian Confluence: browser SSO cookies for REST API access (with background session keep-alive and stale-cookie cleanup)—works with any reachable site you configure (Cloud or Data Center).",
   "keywords": [
     "mcp",
@@ -14,7 +14,7 @@
   ],
   "type": "module",
   "bin": {
-    "confluence-sso-mcp": "./src/index.js"
+    "confluence-mcp": "./src/index.js"
   },
   "files": [
     "src/index.js",
@@ -38,11 +38,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Wasim-Shaikh25/confluence-mcp-oauth.git"
+    "url": "git+https://github.com/Wasim-Shaikh25/confluence-mcp.git"
   },
-  "homepage": "https://github.com/Wasim-Shaikh25/confluence-mcp-oauth#readme",
+  "homepage": "https://github.com/Wasim-Shaikh25/confluence-mcp#readme",
   "bugs": {
-    "url": "https://github.com/Wasim-Shaikh25/confluence-mcp-oauth/issues"
+    "url": "https://github.com/Wasim-Shaikh25/confluence-mcp/issues"
   },
   "publishConfig": {
     "access": "public"
