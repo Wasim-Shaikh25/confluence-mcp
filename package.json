@@ -1,5 +1,5 @@
 {
-  "name": "confluence-mcp",
+  "name": "@svasimahmed283/confluence-mcp",
   "version": "0.2.2",
   "description": "Model Context Protocol (MCP) server for Atlassian Confluence: browser SSO cookies for REST API access (with background session keep-alive and stale-cookie cleanup)—works with any reachable site you configure (Cloud or Data Center).",
   "keywords": [

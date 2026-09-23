@@ -76,11 +76,11 @@ npx playwright install chromium
 # Run the MCP on stdio (set base URL first)
 # Windows CMD:
 set CONFLUENCE_BASE_URL=https://confluence.example.com
-npx -y confluence-mcp
+npx -y @svasimahmed283/confluence-mcp@0.2.2
 
 # Windows PowerShell:
 $env:CONFLUENCE_BASE_URL="https://confluence.example.com"
-npx -y confluence-mcp
+npx -y @svasimahmed283/confluence-mcp@0.2.2
 ```
 
 ### Option B — Clone this repository
@@ -142,14 +142,14 @@ Restart Cursor after changes.
 
 ### Using npx (published package)
 
-Package name on npm: **`confluence-mcp`**.
+Package name on npm: **`@svasimahmed283/confluence-mcp`**.
 
 ```json
 {
   "mcpServers": {
     "confluence-sso": {
       "command": "npx",
-      "args": ["-y", "confluence-mcp"],
+      "args": ["-y", "@svasimahmed283/confluence-mcp@0.2.2"],
       "env": {
         "CONFLUENCE_BASE_URL": "https://confluence.company.com",
         "CONFLUENCE_LOGIN_WAIT_SECONDS": "90"
@@ -264,7 +264,7 @@ Cookies are stored in **`cookies/session.json`** (gitignored).
 | **`confluence_login` hangs or times out in UI** | Chromium may still be open—check the taskbar; or run **`npm run login`** in a terminal (up to **`CONFLUENCE_LOGIN_WAIT_SECONDS`**). |
 | **Browser closes right after opening** | The session probe no longer treats **200 HTML** (after redirects) as “logged in”. Update this package; if it still happens, re-run login and complete SSO fully. |
 | **`Execution context was destroyed` / navigation** | During SSO, **`page.evaluate`** can throw while the page redirects; the login loop now **retries** instead of failing the tool. If login still fails, re-run login and complete SSO fully. |
-| **`ERR_MODULE_NOT_FOUND` for `src/auth.js` (or other `src/*.js`) after `npx`** | The tarball on npm was incomplete or npx cached a bad extract. **Publish** the latest patch (package `files` lists every `src/*.js` explicitly), then **clear npx cache**: delete `%LocalAppData%\npm-cache\_npx` (or run `npx clear-npx-cache` on npm 11+). Pin a version in **`mcp.json`**, e.g. **`"args": ["-y", "confluence-mcp@x.y.z"]`**. Workaround: run from a **git clone** with **`node`** + full path to **`src/index.js`**. |
+| **`ERR_MODULE_NOT_FOUND` for `src/auth.js` (or other `src/*.js`) after `npx`** | The tarball on npm was incomplete or npx cached a bad extract. **Publish** the latest patch (package `files` lists every `src/*.js` explicitly), then **clear npx cache**: delete `%LocalAppData%\npm-cache\_npx` (or run `npx clear-npx-cache` on npm 11+). Pin a version in **`mcp.json`**, e.g. **`"args": ["-y", "@svasimahmed283/confluence-mcp@x.y.z"]`**. Workaround: run from a **git clone** with **`node`** + full path to **`src/index.js`**. |
 | **`ENOENT` on `cookies/*.lock`** | Create a **`cookies/`** folder next to the installed **`src/`** if the lock file cannot be created (Windows `npx` cache). Prefer **`node path/to/clone/src/index.js`** with local **`npm install`**. |
 | **`TAR_ENTRY_ERROR EPERM` / `*.DELETE.*` under `_npx`** | Antivirus or file locks on **`%LocalAppData%\npm-cache`** can corrupt installs. Exclude that path from real-time scanning, or use a **local clone** + **`node`** instead of **`npx`**. |
 
@@ -276,4 +276,4 @@ For broader Cursor MCP issues, see [Cursor forum: MCP tools](https://forum.curso
 
 See **`package.json`** for `repository`, `homepage`, and `bugs` links once you publish or fork.
 
-The npm package name is **`confluence-mcp`**. Legacy names: **`confluence-sso-mcp`**, **`@svasimahmed283/confluence-sso-mcp`**, repo **`confluence-mcp-oauth`** — deprecate on npm/GitHub after migrating clients.
+The npm package name is **`@svasimahmed283/confluence-mcp`**. Legacy: **`confluence-sso-mcp`**, unscoped **`confluence-mcp`** (name taken on npm), repo **`confluence-mcp-oauth`**.
